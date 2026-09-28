@@ -1,0 +1,99 @@
+{
+  "app_name": "CineSuggest",
+  "tagline": "Movie & Series Recommender",
+  "onboarding": {
+    "title": "Let's personalize CineSuggest",
+    "genres_title": "Pick your favorite genres",
+    "providers_title": "Which platforms do you have?",
+    "save": "Save & Continue",
+    "skip": "Skip for now"
+  },
+  "tabs": {
+    "home": "Home",
+    "swipe": "Swipe",
+    "search": "Search",
+    "library": "My Library",
+    "settings": "Settings"
+  },
+  "home": {
+    "quick_pick": "Quick Pick",
+    "one_hour": "I have 1 hour",
+    "want_laugh": "Make me laugh",
+    "on_edge": "Edge of my seat",
+    "roll_dice": "Surprise me!",
+    "trending": "Trending Now",
+    "top_series": "Top Series for You",
+    "greeting": "What shall we watch tonight?"
+  },
+  "swipe": {
+    "title": "Swipe Suggest",
+    "hint": "Swipe right to save, left to skip, tap for details",
+    "empty": "No more suggestions right now — try again later!",
+    "reload": "Load more"
+  },
+  "detail": {
+    "trailer": "Watch Trailer",
+    "add_watchlist": "Add to Watchlist",
+    "in_watchlist": "In Watchlist",
+    "mark_watched": "Mark as Watched",
+    "watched": "Watched",
+    "synopsis": "Synopsis",
+    "no_synopsis": "No synopsis available.",
+    "cast": "Cast & Crew",
+    "available_on": "Available on",
+    "not_available": "Not available in your region",
+    "your_rating": "Your rating"
+  },
+  "library": {
+    "watchlist": "Watchlist",
+    "watched": "Watched",
+    "sort_rating": "Rating",
+    "sort_duration": "Duration",
+    "sort_recent": "Recently Added",
+    "empty_watchlist": "Your watchlist is empty. Start swiping or searching!",
+    "empty_watched": "You haven't marked anything as watched yet."
+  },
+  "search": {
+    "placeholder": "Search movies, series, actors...",
+    "filters": "Filters",
+    "genre": "Genre",
+    "year": "Year",
+    "actor": "Actor",
+    "type": "Type",
+    "type_all": "All",
+    "type_movie": "Movies",
+    "type_tv": "Series",
+    "apply": "Apply Filters",
+    "clear": "Clear",
+    "no_results": "No results found."
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "language": "Language",
+    "providers": "My streaming platforms",
+    "genres": "Favorite genres",
+    "about": "About CineSuggest"
+  },
+  "common": {
+    "back": "Back",
+    "loading": "Loading...",
+    "error": "Something went wrong. Please try again.",
+    "minutes": "min",
+    "seasons": "seasons",
+    "exit_confirm_title": "Exit CineSuggest?",
+    "exit_confirm_message": "Do you want to close the app?",
+    "yes": "Yes",
+    "cancel": "Cancel"
+  },
+  "genres": {
+    "28": "Action", "12": "Adventure", "16": "Animation", "35": "Comedy",
+    "80": "Crime", "99": "Documentary", "18": "Drama", "10751": "Family",
+    "14": "Fantasy", "36": "History", "27": "Horror", "10402": "Music",
+    "9648": "Mystery", "10749": "Romance", "878": "Sci-Fi", "10770": "TV Movie",
+    "53": "Thriller", "10752": "War", "37": "Western"
+  }
+}

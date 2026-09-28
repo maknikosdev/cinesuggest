@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "CineSuggest",
+    "slug": "cinesuggest",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "cinesuggest",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FAF7F0"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "android": {
+      "package": "com.cinesuggest.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FAF7F0"
+      },
+      "permissions": ["INTERNET"],
+      "softwareKeyboardLayoutMode": "pan"
+    },
+    "plugins": [
+      "expo-sqlite",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "imageWidth": 260,
+          "resizeMode": "contain",
+          "backgroundColor": "#FAF7F0"
+        }
+      ]
+    ]
+  }
+}

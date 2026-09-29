@@ -1,22 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, StyleSheet, Pressable, Image, SafeAreaView } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, Pressable, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useAppTheme } from '../theme/ThemeContext';
 import { useApp } from '../context/AppContext';
 import GenreChip from '../components/GenreChip';
-
-const GENRES = [
-  { id: 28, icon: '💥' }, { id: 35, icon: '😂' }, { id: 18, icon: '🎭' },
-  { id: 27, icon: '👻' }, { id: 10749, icon: '❤️' }, { id: 878, icon: '🚀' },
-  { id: 53, icon: '🔪' }, { id: 16, icon: '🎨' }, { id: 9648, icon: '🕵️' },
-  { id: 12, icon: '🗺️' }, { id: 14, icon: '🧙' }, { id: 99, icon: '🎥' },
-];
-
-const PROVIDERS = [
-  { id: 8, name: 'Netflix' }, { id: 337, name: 'Disney+' },
-  { id: 119, name: 'Prime Video' }, { id: 350, name: 'Apple TV+' },
-  { id: 2100, name: 'ERTFLIX' }, { id: 1899, name: 'HBO Max' },
-];
+import { GENRES, PROVIDERS } from '../constants/catalog';
 
 export default function OnboardingScreen({ onDone }) {
   const { t } = useTranslation();
@@ -97,5 +86,4 @@ const styles = StyleSheet.create({
   subtitle: { fontSize: 15, fontWeight: '700', marginBottom: 10 },
   chipsWrap: { flexDirection: 'row', flexWrap: 'wrap' },
   saveBtn: { marginTop: 30, paddingVertical: 15, borderRadius: 16, alignItems: 'center' },
-  saveBtnText: { fontSize: 16, fontWeight: '800' },
-});
+  saveBtnText: { fontSize: 16, fontWeight: '800' } });

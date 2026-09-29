@@ -5,12 +5,10 @@ import {
   TextInput,
   FlatList,
   StyleSheet,
-  Pressable,
-  SafeAreaView,
-  ActivityIndicator,
+  Pressable,  ActivityIndicator,
   Modal,
-  ScrollView,
-} from 'react-native';
+  ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '../theme/ThemeContext';
@@ -60,14 +58,27 @@ export default function SearchScreen({ navigation }) {
             : await tmdb.searchMulti(text);
         items = (res.results || []).map((r) => ({
           ...r,
-          media_type: r.media_type || type,
-        }));
+          media_type: r.media_type || type }));
       } else if (genre || year) {
-        const useTv = type === 'tv';
-        const res = useTv
-          ? await tmdb.discoverTV({ genres: genre, year })
-          : await tmdb.discoverMovies({ genres: genre, year });
-        items = (res.results || []).map((r) => ({ ...r, media_type: useTv ? 'tv' : 'movie' }));
+        // "Όλα": φέρνουμε ΚΑΙ ταινίες ΚΑΙ σειρές που ταιριάζουν στο φίλτρο.
+        // "Ταινίες"/"Σειρές": μόνο τον αντίστοιχο τύπο.
+        if (type === 'movie') {
+          const res = await tmdb.discoverMovies({ genres: genre, year });
+          items = (res.results || []).map((r) => ({ ...r, media_type: 'movie' }));
+        } else if (type === 'tv') {
+          const res = await tmdb.discoverTV({ genres: genre, year });
+          items = (res.results || []).map((r) => ({ ...r, media_type: 'tv' }));
+        } else {
+          const [moviesRes, tvRes] = await Promise.all([
+            tmdb.discoverMovies({ genres: genre, year }),
+            tmdb.discoverTV({ genres: genre, year }),
+          ]);
+          const movies = (moviesRes.results || []).map((r) => ({ ...r, media_type: 'movie' }));
+          const series = (tvRes.results || []).map((r) => ({ ...r, media_type: 'tv' }));
+          items = [...movies, ...series].sort(
+            (a, b) => (b.popularity || 0) - (a.popularity || 0)
+          );
+        }
       }
       // εφαρμογή φίλτρων γένους/έτους πάνω στα αποτελέσματα κειμένου, αν χρειάζεται
       if (text.trim() && genre) {
@@ -215,8 +226,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 12,
-    paddingHorizontal: 12,
-  },
+    paddingHorizontal: 12 },
   input: { flex: 1, paddingVertical: 10, marginLeft: 8 },
   filterBtn: { width: 44, borderWidth: 1, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   chipsRow: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 16, marginTop: 12 },
@@ -228,5 +238,4 @@ const styles = StyleSheet.create({
   wrapRow: { flexDirection: 'row', flexWrap: 'wrap' },
   modalActions: { flexDirection: 'row', gap: 10, marginTop: 16 },
   clearBtn: { flex: 1, borderWidth: 1, borderRadius: 14, alignItems: 'center', paddingVertical: 12 },
-  applyBtn: { flex: 2, borderRadius: 14, alignItems: 'center', paddingVertical: 12 },
-});
+  applyBtn: { flex: 2, borderRadius: 14, alignItems: 'center', paddingVertical: 12 } });

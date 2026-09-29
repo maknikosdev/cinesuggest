@@ -12,7 +12,8 @@ export const TMDB_API_KEY = '754658376b25f2fa54ab50c100070351';
 export const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 export const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p';
 
-// Χώρα για streaming availability (JustWatch μέσω TMDB watch/providers)
+// Χώρα για streaming availability (JustWatch μέσω TMDB watch/providers) —
+// χρησιμοποιείται μόνο στο Detail screen για να δείξουμε τα badges "Available on".
 export const WATCH_REGION = 'GR';
 
 function buildUrl(path, params = {}) {
@@ -49,9 +50,6 @@ export const tmdb = {
   trending: (mediaType = 'all', timeWindow = 'week') =>
     request(`/trending/${mediaType}/${timeWindow}`),
 
-  topRatedTV: (page = 1, withGenres) =>
-    request('/discover/tv', { sort_by: 'popularity.desc', page, with_genres: withGenres }),
-
   discoverMovies: ({ genres, year, page = 1, sortBy = 'popularity.desc', maxRuntime } = {}) =>
     request('/discover/movie', {
       with_genres: genres,
@@ -59,7 +57,6 @@ export const tmdb = {
       page,
       sort_by: sortBy,
       'with_runtime.lte': maxRuntime,
-      watch_region: WATCH_REGION,
     }),
 
   discoverTV: ({ genres, year, page = 1, sortBy = 'popularity.desc' } = {}) =>
@@ -68,7 +65,6 @@ export const tmdb = {
       first_air_date_year: year,
       page,
       sort_by: sortBy,
-      watch_region: WATCH_REGION,
     }),
 
   // --- Αναζήτηση ---

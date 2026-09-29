@@ -7,9 +7,8 @@ import {
   StyleSheet,
   Pressable,
   ActivityIndicator,
-  Linking,
-  SafeAreaView,
-} from 'react-native';
+  Linking } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '../theme/ThemeContext';
@@ -234,8 +233,7 @@ const styles = StyleSheet.create({
     height: 38,
     borderRadius: 19,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center' },
   body: { padding: 16, marginTop: -50 },
   headerRow: { flexDirection: 'row' },
   poster: { width: 110, height: 165, borderRadius: 12 },
@@ -247,19 +245,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    marginTop: 8,
-  },
+    marginTop: 8 },
   actionsRow: { flexDirection: 'row', gap: 10, marginTop: 18 },
   actionBtn: {
     flex: 1,
     borderWidth: 1,
     borderRadius: 14,
     alignItems: 'center',
-    paddingVertical: 10,
-  },
+    paddingVertical: 10 },
   sectionTitle: { fontSize: 15.5, fontWeight: '800', marginTop: 20, marginBottom: 8 },
   providerBadge: { marginRight: 10 },
   providerLogo: { width: 46, height: 46, borderRadius: 10 },
   castItem: { marginRight: 12, alignItems: 'center' },
-  castPhoto: { width: 68, height: 68, borderRadius: 34 },
-});
+  castPhoto: { width: 68, height: 68, borderRadius: 34 } });

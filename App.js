@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import * as ExpoSplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { I18nextProvider } from 'react-i18next';
 
 import i18n, { loadSavedLanguage } from './src/i18n';
@@ -49,13 +50,15 @@ function Gate() {
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <I18nextProvider i18n={i18n}>
-        <ThemeProvider>
-          <AppProvider>
-            <Gate />
-          </AppProvider>
-        </ThemeProvider>
-      </I18nextProvider>
+      <SafeAreaProvider>
+        <I18nextProvider i18n={i18n}>
+          <ThemeProvider>
+            <AppProvider>
+              <Gate />
+            </AppProvider>
+          </ThemeProvider>
+        </I18nextProvider>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }

@@ -1,22 +1,77 @@
-import React from 'react';
-import { View, Text, StyleSheet, Pressable, SafeAreaView, Image, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Pressable, Image, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '../theme/ThemeContext';
+import { useApp } from '../context/AppContext';
 import { setAppLanguage } from '../i18n';
+import GenreChip from '../components/GenreChip';
+import { GENRES, PROVIDERS } from '../constants/catalog';
 
 export default function SettingsScreen({ navigation }) {
   const { t, i18n } = useTranslation();
   const { theme, modePreference, setMode } = useAppTheme();
+  const { favoriteGenres, providers, savePrefs } = useApp();
+
+  const [selectedGenres, setSelectedGenres] = useState(favoriteGenres);
+  const [selectedProviders, setSelectedProviders] = useState(providers);
+
+  // Συγχρόνισε τοπικό state αν αλλάξουν οι αποθηκευμένες τιμές αλλού
+  useEffect(() => setSelectedGenres(favoriteGenres), [favoriteGenres]);
+  useEffect(() => setSelectedProviders(providers), [providers]);
 
   const changeLang = async (lang) => {
     await setAppLanguage(lang);
+  };
+
+  const toggleGenre = (id) => {
+    const next = selectedGenres.includes(id)
+      ? selectedGenres.filter((g) => g !== id)
+      : [...selectedGenres, id];
+    setSelectedGenres(next);
+    savePrefs(next, selectedProviders);
+  };
+
+  const toggleProvider = (id) => {
+    const next = selectedProviders.includes(id)
+      ? selectedProviders.filter((p) => p !== id)
+      : [...selectedProviders, id];
+    setSelectedProviders(next);
+    savePrefs(selectedGenres, next);
   };
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
       <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 40 }}>
         <Text style={[styles.header, { color: theme.text }]}>{t('settings.title')}</Text>
+
+        <Section title={t('settings.providers')} theme={theme}>
+          <View style={styles.row}>
+            {PROVIDERS.map((p) => (
+              <GenreChip
+                key={p.id}
+                label={p.name}
+                selected={selectedProviders.includes(p.id)}
+                onPress={() => toggleProvider(p.id)}
+              />
+            ))}
+          </View>
+        </Section>
+
+        <Section title={t('settings.genres')} theme={theme}>
+          <View style={styles.row}>
+            {GENRES.map((g) => (
+              <GenreChip
+                key={g.id}
+                icon={g.icon}
+                label={t(`genres.${g.id}`)}
+                selected={selectedGenres.includes(g.id)}
+                onPress={() => toggleGenre(g.id)}
+              />
+            ))}
+          </View>
+        </Section>
 
         <Section title={t('settings.appearance')} theme={theme}>
           <View style={styles.row}>
@@ -101,6 +156,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 12,
     paddingHorizontal: 12,
-    paddingVertical: 9,
-  },
-});
+    paddingVertical: 9 } });

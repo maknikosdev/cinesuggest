@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, SafeAreaView, ActivityIndicator, Pressable } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '../theme/ThemeContext';
@@ -45,8 +46,7 @@ export default function QuickPickResultsScreen({ route, navigation }) {
     short: t('home.one_hour'),
     comedy: t('home.want_laugh'),
     thriller: t('home.on_edge'),
-    random: t('home.roll_dice'),
-  }[mode];
+    random: t('home.roll_dice') }[mode];
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
@@ -104,7 +104,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  title: { fontSize: 17, fontWeight: '800' },
-});
+    paddingVertical: 12 },
+  title: { fontSize: 17, fontWeight: '800' } });

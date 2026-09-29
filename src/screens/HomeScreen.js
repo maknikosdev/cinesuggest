@@ -4,10 +4,8 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Pressable,
-  Image,
-  SafeAreaView,
-} from 'react-native';
+  Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '../theme/ThemeContext';
@@ -55,8 +53,7 @@ export default function HomeScreen({ navigation }) {
   const openDetail = (item) => {
     navigation.navigate('Detail', {
       id: item.id,
-      mediaType: item.media_type || (item.title ? 'movie' : 'tv'),
-    });
+      mediaType: item.media_type || (item.title ? 'movie' : 'tv') });
   };
 
   const runQuickPick = (mode) => {
@@ -67,13 +64,11 @@ export default function HomeScreen({ navigation }) {
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Image source={require('../../assets/logo_full.png')} style={styles.headerLogo} resizeMode="contain" />
-          <Pressable onPress={() => navigation.navigate('Settings')}>
+          <Text style={[styles.greeting, { color: theme.text }]}>{t('home.greeting')}</Text>
+          <Pressable onPress={() => navigation.navigate('Settings')} hitSlop={10}>
             <Ionicons name="settings-outline" size={24} color={theme.text} />
           </Pressable>
         </View>
-
-        <Text style={[styles.greeting, { color: theme.text }]}>{t('home.greeting')}</Text>
 
         <Pressable
           onPress={() => navigation.navigate('SearchTab')}
@@ -123,10 +118,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingTop: 6,
-  },
-  headerLogo: { width: 42, height: 42 },
-  greeting: { fontSize: 20, fontWeight: '800', paddingHorizontal: 16, marginTop: 6 },
+    paddingTop: 10 },
+  greeting: { flex: 1, fontSize: 20, fontWeight: '800', marginRight: 12 },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -135,8 +128,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderRadius: 14,
-    borderWidth: 1,
-  },
+    borderWidth: 1 },
   sectionTitle: { fontSize: 17, fontWeight: '700', marginTop: 22, marginBottom: 10 },
   quickRow: { flexDirection: 'row', paddingHorizontal: 16, gap: 10 },
   quickBtn: {
@@ -145,7 +137,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     paddingVertical: 12,
-    paddingHorizontal: 4,
-  },
-  quickLabel: { fontSize: 11, fontWeight: '600', marginTop: 6, textAlign: 'center' },
-});
+    paddingHorizontal: 4 },
+  quickLabel: { fontSize: 11, fontWeight: '600', marginTop: 6, textAlign: 'center' } });

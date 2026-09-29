@@ -10,7 +10,6 @@
   },
   "tabs": {
     "home": "Home",
-    "swipe": "Swipe",
     "search": "Search",
     "library": "My Library",
     "settings": "Settings"
@@ -23,14 +22,11 @@
     "roll_dice": "Surprise me!",
     "trending": "Trending Now",
     "top_series": "Top Series for You",
-    "greeting": "What shall we watch tonight?"
+    "greeting": "What shall we watch tonight?",
+    "no_providers_title": "No platforms selected yet",
+    "no_providers_body": "Choose the streaming platforms you have, so we only suggest what you can actually watch."
   },
-  "swipe": {
-    "title": "Swipe Suggest",
-    "hint": "Swipe right to save, left to skip, tap for details",
-    "empty": "No more suggestions right now — try again later!",
-    "reload": "Load more"
-  },
+  "swipe": {},
   "detail": {
     "trailer": "Watch Trailer",
     "add_watchlist": "Add to Watchlist",

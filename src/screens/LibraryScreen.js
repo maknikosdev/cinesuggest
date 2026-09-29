@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Pressable, SafeAreaView } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useFocusEffect } from '@react-navigation/native';
 import { useAppTheme } from '../theme/ThemeContext';
@@ -24,8 +25,7 @@ export default function LibraryScreen({ navigation }) {
         media_type: r.media_type,
         title: r.title,
         poster_path: r.poster_path,
-        vote_average: r.vote_average,
-      }))
+        vote_average: r.vote_average }))
     );
   }, [tab, sortBy, fetchWatchlist]);
 
@@ -101,5 +101,4 @@ const styles = StyleSheet.create({
   header: { fontSize: 22, fontWeight: '800', paddingHorizontal: 16, paddingTop: 8 },
   tabRow: { flexDirection: 'row', gap: 10, paddingHorizontal: 16, marginTop: 14 },
   tabBtn: { flex: 1, borderWidth: 1, borderRadius: 12, alignItems: 'center', paddingVertical: 10 },
-  sortRow: { flexDirection: 'row', paddingHorizontal: 16, marginTop: 14 },
-});
+  sortRow: { flexDirection: 'row', paddingHorizontal: 16, marginTop: 14 } });

@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 
 import { useAppTheme } from '../theme/ThemeContext';
 import HomeScreen from '../screens/HomeScreen';
-import SwipeScreen from '../screens/SwipeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import LibraryScreen from '../screens/LibraryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -17,7 +16,6 @@ import QuickPickResultsScreen from '../screens/QuickPickResultsScreen';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
-const SwipeStack = createNativeStackNavigator();
 const SearchStack = createNativeStackNavigator();
 const LibraryStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
@@ -32,15 +30,6 @@ function HomeStackScreen() {
       <HomeStack.Screen name="Detail" component={DetailScreen} />
       <HomeStack.Screen name="Settings" component={SettingsScreen} />
     </HomeStack.Navigator>
-  );
-}
-
-function SwipeStackScreen() {
-  return (
-    <SwipeStack.Navigator screenOptions={{ headerShown: false }}>
-      <SwipeStack.Screen name="SwipeMain" component={SwipeScreen} />
-      <SwipeStack.Screen name="Detail" component={DetailScreen} />
-    </SwipeStack.Navigator>
   );
 }
 
@@ -84,7 +73,6 @@ function Tabs() {
         tabBarIcon: ({ color, size, focused }) => {
           const icons = {
             HomeTab: focused ? 'home' : 'home-outline',
-            SwipeTab: focused ? 'albums' : 'albums-outline',
             SearchTab: focused ? 'search' : 'search-outline',
             LibraryTab: focused ? 'bookmark' : 'bookmark-outline',
             SettingsTab: focused ? 'settings' : 'settings-outline',
@@ -94,7 +82,6 @@ function Tabs() {
       })}
     >
       <Tab.Screen name="HomeTab" component={HomeStackScreen} options={{ title: t('tabs.home') }} />
-      <Tab.Screen name="SwipeTab" component={SwipeStackScreen} options={{ title: t('tabs.swipe') }} />
       <Tab.Screen name="SearchTab" component={SearchStackScreen} options={{ title: t('tabs.search') }} />
       <Tab.Screen name="LibraryTab" component={LibraryStackScreen} options={{ title: t('tabs.library') }} />
       <Tab.Screen name="SettingsTab" component={SettingsStackScreen} options={{ title: t('tabs.settings') }} />

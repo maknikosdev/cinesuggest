@@ -1,16 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '../theme/ThemeContext';
 import { useApp } from '../context/AppContext';
 import { tmdb } from '../api/tmdb';
+import { toTvGenreParam } from '../constants/catalog';
 import Carousel from '../components/Carousel';
 
 export default function HomeScreen({ navigation }) {
@@ -23,7 +19,9 @@ export default function HomeScreen({ navigation }) {
   const [loadingTrending, setLoadingTrending] = useState(true);
   const [loadingSeries, setLoadingSeries] = useState(true);
 
-  const genresCsv = favoriteGenres.join(',') || undefined;
+  // Τα αγαπημένα είδη του onboarding είναι IDs ταινιών· οι σειρές στο TMDB
+  // έχουν άλλα IDs, οπότε τα μετατρέπουμε (και με OR, όχι AND).
+  const tvGenres = toTvGenreParam(favoriteGenres);
 
   const load = useCallback(async () => {
     setLoadingTrending(true);
@@ -37,14 +35,14 @@ export default function HomeScreen({ navigation }) {
       setLoadingTrending(false);
     }
     try {
-      const seriesRes = await tmdb.discoverTV({ genres: genresCsv });
+      const seriesRes = await tmdb.discoverTV({ genres: tvGenres });
       setTopSeries((seriesRes.results || []).map((r) => ({ ...r, media_type: 'tv' })));
     } catch (e) {
       setTopSeries([]);
     } finally {
       setLoadingSeries(false);
     }
-  }, [genresCsv]);
+  }, [tvGenres]);
 
   useEffect(() => {
     load();
@@ -54,10 +52,6 @@ export default function HomeScreen({ navigation }) {
     navigation.navigate('Detail', {
       id: item.id,
       mediaType: item.media_type || (item.title ? 'movie' : 'tv') });
-  };
-
-  const runQuickPick = (mode) => {
-    navigation.navigate('QuickPickResults', { mode, genres: genresCsv });
   };
 
   return (
@@ -78,36 +72,12 @@ export default function HomeScreen({ navigation }) {
           <Text style={{ color: theme.textSecondary, marginLeft: 8 }}>{t('search.placeholder')}</Text>
         </Pressable>
 
-        <Text style={[styles.sectionTitle, { color: theme.text, paddingHorizontal: 16 }]}>
-          {t('home.quick_pick')}
-        </Text>
-        <View style={styles.quickRow}>
-          <QuickButton icon="🍿" label={t('home.one_hour')} onPress={() => runQuickPick('short')} theme={theme} />
-          <QuickButton icon="🎭" label={t('home.want_laugh')} onPress={() => runQuickPick('comedy')} theme={theme} />
-          <QuickButton icon="😱" label={t('home.on_edge')} onPress={() => runQuickPick('thriller')} theme={theme} />
-          <QuickButton icon="🎲" label={t('home.roll_dice')} onPress={() => runQuickPick('random')} theme={theme} />
-        </View>
-
         <Carousel title={t('home.trending')} data={trending} loading={loadingTrending} onItemPress={openDetail} />
         <Carousel title={t('home.top_series')} data={topSeries} loading={loadingSeries} onItemPress={openDetail} />
 
         <View style={{ height: 30 }} />
       </ScrollView>
     </SafeAreaView>
-  );
-}
-
-function QuickButton({ icon, label, onPress, theme }) {
-  return (
-    <Pressable
-      onPress={onPress}
-      style={[styles.quickBtn, { backgroundColor: theme.surface, borderColor: theme.border }]}
-    >
-      <Text style={{ fontSize: 22 }}>{icon}</Text>
-      <Text style={[styles.quickLabel, { color: theme.text }]} numberOfLines={2}>
-        {label}
-      </Text>
-    </Pressable>
   );
 }
 
@@ -128,14 +98,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderRadius: 14,
-    borderWidth: 1 },
-  sectionTitle: { fontSize: 17, fontWeight: '700', marginTop: 22, marginBottom: 10 },
-  quickRow: { flexDirection: 'row', paddingHorizontal: 16, gap: 10 },
-  quickBtn: {
-    flex: 1,
-    borderRadius: 14,
-    borderWidth: 1,
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 4 },
-  quickLabel: { fontSize: 11, fontWeight: '600', marginTop: 6, textAlign: 'center' } });
+    borderWidth: 1 } });

@@ -4,11 +4,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { posterUrl } from '../api/tmdb';
 import { useAppTheme } from '../theme/ThemeContext';
 
-export default function MovieCard({ item, onPress, width = 130 }) {
+export default function MovieCard({ item, onPress, width = 130, subtitle }) {
   const { theme } = useAppTheme();
   const title = item.title || item.name;
   const poster = posterUrl(item.poster_path || item.poster);
   const rating = (item.vote_average ?? 0).toFixed(1);
+  const showRating = (item.vote_average ?? 0) > 0;
 
   return (
     <Pressable onPress={() => onPress?.(item)} style={[styles.container, { width }]}>
@@ -20,14 +21,21 @@ export default function MovieCard({ item, onPress, width = 130 }) {
             <Ionicons name="film-outline" size={28} color={theme.textSecondary} />
           </View>
         )}
-        <View style={[styles.ratingBadge, { backgroundColor: theme.primary }]}>
-          <Ionicons name="star" size={10} color={theme.primaryText} />
-          <Text style={[styles.ratingText, { color: theme.primaryText }]}>{rating}</Text>
-        </View>
+        {showRating && (
+          <View style={[styles.ratingBadge, { backgroundColor: theme.primary }]}>
+            <Ionicons name="star" size={10} color={theme.primaryText} />
+            <Text style={[styles.ratingText, { color: theme.primaryText }]}>{rating}</Text>
+          </View>
+        )}
       </View>
       <Text numberOfLines={2} style={[styles.title, { color: theme.text }]}>
         {title}
       </Text>
+      {!!subtitle && (
+        <Text numberOfLines={1} style={[styles.subtitle, { color: theme.textSecondary }]}>
+          {subtitle}
+        </Text>
+      )}
     </Pressable>
   );
 }
@@ -49,5 +57,6 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   ratingText: { fontSize: 11, fontWeight: '700' },
+  subtitle: { fontSize: 11, marginTop: 2 },
   title: { marginTop: 6, fontSize: 13, fontWeight: '600' },
 });

@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '../theme/ThemeContext';
 import { tmdb } from '../api/tmdb';
+import { toTvGenreIds } from '../constants/catalog';
 import MovieCard from '../components/MovieCard';
 import GenreChip from '../components/GenreChip';
 
@@ -40,6 +41,8 @@ export default function SearchScreen({ navigation }) {
     setSearched(true);
     try {
       let items = [];
+      const tvIds = genre ? toTvGenreIds([genre]) : [];
+      const tvGenre = tvIds.length ? tvIds.join('|') : undefined;
       if (actorMode && text.trim()) {
         const people = await tmdb.searchPerson(text);
         const person = people.results?.[0];
@@ -66,12 +69,12 @@ export default function SearchScreen({ navigation }) {
           const res = await tmdb.discoverMovies({ genres: genre, year });
           items = (res.results || []).map((r) => ({ ...r, media_type: 'movie' }));
         } else if (type === 'tv') {
-          const res = await tmdb.discoverTV({ genres: genre, year });
-          items = (res.results || []).map((r) => ({ ...r, media_type: 'tv' }));
+          const res = await tmdb.discoverTV({ genres: tvGenre, year });
+          items = genre && !tvGenre ? [] : (res.results || []).map((r) => ({ ...r, media_type: 'tv' }));
         } else {
           const [moviesRes, tvRes] = await Promise.all([
             tmdb.discoverMovies({ genres: genre, year }),
-            tmdb.discoverTV({ genres: genre, year }),
+            genre && !tvGenre ? Promise.resolve({ results: [] }) : tmdb.discoverTV({ genres: tvGenre, year }),
           ]);
           const movies = (moviesRes.results || []).map((r) => ({ ...r, media_type: 'movie' }));
           const series = (tvRes.results || []).map((r) => ({ ...r, media_type: 'tv' }));
@@ -82,7 +85,11 @@ export default function SearchScreen({ navigation }) {
       }
       // εφαρμογή φίλτρων γένους/έτους πάνω στα αποτελέσματα κειμένου, αν χρειάζεται
       if (text.trim() && genre) {
-        items = items.filter((it) => it.genre_ids?.includes(Number(genre)));
+        items = items.filter((it) =>
+          it.media_type === 'tv'
+            ? it.genre_ids?.some((g) => tvIds.includes(g))
+            : it.genre_ids?.includes(Number(genre))
+        );
       }
       items = items.filter((it) => it.media_type !== 'person' && (it.poster_path || it.title || it.name));
       setResults(items);

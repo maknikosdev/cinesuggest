@@ -11,22 +11,15 @@
   "tabs": {
     "home": "Home",
     "search": "Search",
-    "library": "My Library",
-    "settings": "Settings"
+    "library": "Library",
+    "browse": "Browse",
+    "cinema": "Cinema"
   },
   "home": {
-    "quick_pick": "Quick Pick",
-    "one_hour": "I have 1 hour",
-    "want_laugh": "Make me laugh",
-    "on_edge": "Edge of my seat",
-    "roll_dice": "Surprise me!",
     "trending": "Trending Now",
     "top_series": "Top Series for You",
-    "greeting": "What shall we watch tonight?",
-    "no_providers_title": "No platforms selected yet",
-    "no_providers_body": "Choose the streaming platforms you have, so we only suggest what you can actually watch."
+    "greeting": "What shall we watch tonight?"
   },
-  "swipe": {},
   "detail": {
     "trailer": "Watch Trailer",
     "add_watchlist": "Add to Watchlist",
@@ -37,8 +30,9 @@
     "no_synopsis": "No synopsis available.",
     "cast": "Cast & Crew",
     "available_on": "Available on",
-    "not_available": "Not available in your region",
-    "your_rating": "Your rating"
+    "not_available": "No streaming info available for your region",
+    "your_rating": "Your rating",
+    "next_episode": "Next episode"
   },
   "library": {
     "watchlist": "Watchlist",
@@ -46,7 +40,7 @@
     "sort_rating": "Rating",
     "sort_duration": "Duration",
     "sort_recent": "Recently Added",
-    "empty_watchlist": "Your watchlist is empty. Start swiping or searching!",
+    "empty_watchlist": "Your watchlist is empty. Start searching!",
     "empty_watched": "You haven't marked anything as watched yet."
   },
   "search": {
@@ -83,13 +77,43 @@
     "exit_confirm_title": "Exit CineSuggest?",
     "exit_confirm_message": "Do you want to close the app?",
     "yes": "Yes",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "retry": "Retry"
   },
   "genres": {
-    "28": "Action", "12": "Adventure", "16": "Animation", "35": "Comedy",
-    "80": "Crime", "99": "Documentary", "18": "Drama", "10751": "Family",
-    "14": "Fantasy", "36": "History", "27": "Horror", "10402": "Music",
-    "9648": "Mystery", "10749": "Romance", "878": "Sci-Fi", "10770": "TV Movie",
-    "53": "Thriller", "10752": "War", "37": "Western"
+    "28": "Action",
+    "12": "Adventure",
+    "16": "Animation",
+    "35": "Comedy",
+    "80": "Crime",
+    "99": "Documentary",
+    "18": "Drama",
+    "10751": "Family",
+    "14": "Fantasy",
+    "36": "History",
+    "27": "Horror",
+    "10402": "Music",
+    "9648": "Mystery",
+    "10749": "Romance",
+    "878": "Sci-Fi",
+    "10770": "TV Movie",
+    "53": "Thriller",
+    "10752": "War",
+    "37": "Western"
+  },
+  "browse": {
+    "type_movie": "Movies",
+    "type_tv": "Series",
+    "pick_type": "What do you want to watch?",
+    "pick_genre": "Pick a category",
+    "prompt": "Choose a category to see titles",
+    "genres_error": "Could not load categories.",
+    "no_results": "No titles found.",
+    "empty_hint": "Includes titles from all platforms and cinemas."
+  },
+  "cinema": {
+    "now_playing": "Now Playing",
+    "upcoming": "Coming Soon",
+    "opens": "Opens"
   }
 }

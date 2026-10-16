@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '../theme/ThemeContext';
 import { useApp } from '../context/AppContext';
+import { getOmdbRatings, getWatchmodeSources, getTvmazeInfo } from '../api/extras';
 import { tmdb, backdropUrl, posterUrl, findTrailerKey, getWatchProviders } from '../api/tmdb';
 
 export default function DetailScreen({ route, navigation }) {
@@ -24,6 +25,9 @@ export default function DetailScreen({ route, navigation }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [entry, setEntry] = useState(null);
+  const [ratings, setRatings] = useState(null);
+  const [sources, setSources] = useState([]);
+  const [tvInfo, setTvInfo] = useState(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -32,6 +36,11 @@ export default function DetailScreen({ route, navigation }) {
       setData(details);
       const e = await fetchEntry(id, mediaType);
       setEntry(e);
+      // Επιπλέον πηγές: φορτώνουν στο παρασκήνιο και δεν καθυστερούν την οθόνη.
+      const imdbId = details.imdb_id || details.external_ids?.imdb_id;
+      getOmdbRatings(imdbId).then(setRatings);
+      getWatchmodeSources(imdbId).then(setSources);
+      if (mediaType === 'tv') getTvmazeInfo(imdbId).then(setTvInfo);
     } catch (e) {
       setData(null);
     } finally {
@@ -127,6 +136,20 @@ export default function DetailScreen({ route, navigation }) {
                   {(data.vote_average ?? 0).toFixed(1)}/10
                 </Text>
               </View>
+              {ratings && (ratings.imdb || ratings.rotten || ratings.metascore) && (
+                <Text style={{ color: theme.textSecondary, marginTop: 8, fontSize: 12.5 }}>
+                  {[
+                    ratings.imdb && `IMDb ${ratings.imdb}`,
+                    ratings.rotten && `🍅 ${ratings.rotten}`,
+                    ratings.metascore && `Metascore ${ratings.metascore}`,
+                  ].filter(Boolean).join('  ·  ')}
+                </Text>
+              )}
+              {tvInfo?.next && (
+                <Text style={{ color: theme.textSecondary, marginTop: 6, fontSize: 12.5 }}>
+                  {t('detail.next_episode')}: S{tvInfo.next.season}E{tvInfo.next.number} · {tvInfo.next.airdate}
+                </Text>
+              )}
             </View>
           </View>
 
@@ -182,6 +205,21 @@ export default function DetailScreen({ route, navigation }) {
             </ScrollView>
           ) : (
             <Text style={{ color: theme.textSecondary }}>{t('detail.not_available')}</Text>
+          )}
+
+          {sources.length > 0 && (
+            <View style={styles.linkRow}>
+              {sources.map((src) => (
+                <Pressable
+                  key={src.name}
+                  onPress={() => Linking.openURL(src.url)}
+                  style={[styles.linkChip, { borderColor: theme.border, backgroundColor: theme.surface }]}
+                >
+                  <Ionicons name="open-outline" size={13} color={theme.primary} />
+                  <Text style={{ color: theme.text, fontSize: 12, fontWeight: '600', marginLeft: 4 }}>{src.name}</Text>
+                </Pressable>
+              ))}
+            </View>
           )}
 
           {cast.length > 0 && (
@@ -254,6 +292,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10 },
   sectionTitle: { fontSize: 15.5, fontWeight: '800', marginTop: 20, marginBottom: 8 },
+  linkRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 10 },
+  linkChip: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: 14, paddingHorizontal: 10, paddingVertical: 6 },
   providerBadge: { marginRight: 10 },
   providerLogo: { width: 46, height: 46, borderRadius: 10 },
   castItem: { marginRight: 12, alignItems: 'center' },

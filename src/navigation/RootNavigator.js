@@ -8,28 +8,48 @@ import { useTranslation } from 'react-i18next';
 
 import { useAppTheme } from '../theme/ThemeContext';
 import HomeScreen from '../screens/HomeScreen';
+import BrowseScreen from '../screens/BrowseScreen';
+import CinemaScreen from '../screens/CinemaScreen';
 import SearchScreen from '../screens/SearchScreen';
 import LibraryScreen from '../screens/LibraryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import DetailScreen from '../screens/DetailScreen';
-import QuickPickResultsScreen from '../screens/QuickPickResultsScreen';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
+const BrowseStack = createNativeStackNavigator();
+const CinemaStack = createNativeStackNavigator();
 const SearchStack = createNativeStackNavigator();
 const LibraryStack = createNativeStackNavigator();
-const SettingsStack = createNativeStackNavigator();
 
 // Κάθε tab έχει το δικό του stack ώστε το Android back button
 // να κάνει φυσιολογικά "pop" μέσα στο stack πριν βγει από την εφαρμογή.
+// Οι Ρυθμίσεις ανοίγουν από το εικονίδιο γραναζιού της Αρχικής.
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator screenOptions={{ headerShown: false }}>
       <HomeStack.Screen name="HomeMain" component={HomeScreen} />
-      <HomeStack.Screen name="QuickPickResults" component={QuickPickResultsScreen} />
       <HomeStack.Screen name="Detail" component={DetailScreen} />
       <HomeStack.Screen name="Settings" component={SettingsScreen} />
     </HomeStack.Navigator>
+  );
+}
+
+function BrowseStackScreen() {
+  return (
+    <BrowseStack.Navigator screenOptions={{ headerShown: false }}>
+      <BrowseStack.Screen name="BrowseMain" component={BrowseScreen} />
+      <BrowseStack.Screen name="Detail" component={DetailScreen} />
+    </BrowseStack.Navigator>
+  );
+}
+
+function CinemaStackScreen() {
+  return (
+    <CinemaStack.Navigator screenOptions={{ headerShown: false }}>
+      <CinemaStack.Screen name="CinemaMain" component={CinemaScreen} />
+      <CinemaStack.Screen name="Detail" component={DetailScreen} />
+    </CinemaStack.Navigator>
   );
 }
 
@@ -51,14 +71,6 @@ function LibraryStackScreen() {
   );
 }
 
-function SettingsStackScreen() {
-  return (
-    <SettingsStack.Navigator screenOptions={{ headerShown: false }}>
-      <SettingsStack.Screen name="SettingsMain" component={SettingsScreen} />
-    </SettingsStack.Navigator>
-  );
-}
-
 function Tabs() {
   const { theme } = useAppTheme();
   const { t } = useTranslation();
@@ -70,21 +82,24 @@ function Tabs() {
         tabBarActiveTintColor: theme.primary,
         tabBarInactiveTintColor: theme.textSecondary,
         tabBarStyle: { backgroundColor: theme.tabBar, borderTopColor: theme.border },
+        tabBarLabelStyle: { fontSize: 11 },
         tabBarIcon: ({ color, size, focused }) => {
           const icons = {
             HomeTab: focused ? 'home' : 'home-outline',
+            BrowseTab: focused ? 'grid' : 'grid-outline',
+            CinemaTab: focused ? 'film' : 'film-outline',
             SearchTab: focused ? 'search' : 'search-outline',
             LibraryTab: focused ? 'bookmark' : 'bookmark-outline',
-            SettingsTab: focused ? 'settings' : 'settings-outline',
           };
           return <Ionicons name={icons[route.name]} size={size} color={color} />;
         },
       })}
     >
       <Tab.Screen name="HomeTab" component={HomeStackScreen} options={{ title: t('tabs.home') }} />
+      <Tab.Screen name="BrowseTab" component={BrowseStackScreen} options={{ title: t('tabs.browse') }} />
+      <Tab.Screen name="CinemaTab" component={CinemaStackScreen} options={{ title: t('tabs.cinema') }} />
       <Tab.Screen name="SearchTab" component={SearchStackScreen} options={{ title: t('tabs.search') }} />
       <Tab.Screen name="LibraryTab" component={LibraryStackScreen} options={{ title: t('tabs.library') }} />
-      <Tab.Screen name="SettingsTab" component={SettingsStackScreen} options={{ title: t('tabs.settings') }} />
     </Tab.Navigator>
   );
 }

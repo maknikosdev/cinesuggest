@@ -77,13 +77,17 @@ export const tmdb = {
   movieDetails: (id) =>
     request(`/movie/${id}`, { append_to_response: 'credits,videos,watch/providers' }),
   tvDetails: (id) =>
-    request(`/tv/${id}`, { append_to_response: 'credits,videos,watch/providers' }),
+    request(`/tv/${id}`, { append_to_response: 'credits,videos,watch/providers,external_ids' }),
 
   personCredits: (id) => request(`/person/${id}/combined_credits`),
 
   // --- Genres ---
-  movieGenres: () => request('/genre/movie/list'),
-  tvGenres: () => request('/genre/tv/list'),
+  movieGenres: (language) => request('/genre/movie/list', { language }),
+  tvGenres: (language) => request('/genre/tv/list', { language }),
+
+  // --- Κινηματογράφος (Ελλάδα) ---
+  nowPlaying: (page = 1) => request('/movie/now_playing', { region: WATCH_REGION, page }),
+  upcoming: (page = 1) => request('/movie/upcoming', { region: WATCH_REGION, page }),
 
   // --- Random / Mood matcher helpers ---
   discoverByRuntime: (maxRuntime, genres, page = 1) =>

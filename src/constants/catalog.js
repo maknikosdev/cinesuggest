@@ -14,3 +14,23 @@ export const PROVIDERS = [
   { id: 119, name: 'Prime Video' }, { id: 350, name: 'Apple TV+' },
   { id: 2100, name: 'ERTFLIX' }, { id: 1899, name: 'HBO Max' },
 ];
+
+// Τα IDs ειδών του TMDB διαφέρουν μεταξύ ταινιών και σειρών.
+// Αντιστοίχιση ID ταινίας -> ID(s) σειράς (οι σειρές δεν έχουν Horror/Thriller/Romance).
+const MOVIE_TO_TV = {
+  28: [10759], 12: [10759], 16: [16], 35: [35], 80: [80], 99: [99], 18: [18],
+  10751: [10751], 14: [10765], 878: [10765], 9648: [9648], 10752: [10768],
+  37: [37], 36: [], 27: [], 53: [], 10749: [], 10402: [],
+};
+
+export function toTvGenreIds(movieIds = []) {
+  const out = new Set();
+  movieIds.forEach((id) => (MOVIE_TO_TV[Number(id)] || []).forEach((x) => out.add(x)));
+  return [...out];
+}
+
+// OR ("|") ώστε να ταιριάζει σε οποιοδήποτε από τα αγαπημένα είδη.
+export function toTvGenreParam(movieIds = []) {
+  const ids = toTvGenreIds(movieIds);
+  return ids.length ? ids.join('|') : undefined;
+}
